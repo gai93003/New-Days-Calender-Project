@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Days Calender</title>
+    <script defer src="script.js" type="module"></script>
+    <style>
+        main {
+            width: 80%;
+            margin: 0 auto;
+        }
+        section#week-days, #display-days {
+            background: grey;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            padding: 5px;
+        }
+        #week-days .day, #display-days .day {
+            text-align: center;
+            border: 1px solid black;
+            padding: 16px;
+        }
+        #nav {
+            display: flex;
+            justify-content: space-evenly;
+            margin: 20px;
+        }
+        .commemorative-day {
+            background-color: gold;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        <section id="nav">
+            <button id="prev-btn">Previous</button>
+            <select name="" id="select-year"></select>
+            <select name="" id="select-month"></select>
+            <button id="next-btn">Next</button>
+        </section>
+        <h2 id="display-month"></h2>
+        <section id="week-days">
+            <div class="day">Monday</div>
+            <div class="day">Tuesday</div>
+            <div class="day">Wednesday</div>
+            <div class="day">Thursday</div>
+            <div class="day">Friday</div>
+            <div class="day">Saturday</div>
+            <div class="day">Sunday</div>
+        </section>
+        <section id="display-days">
+            
+        </section>
+    </main>
+</body>
+</html>
