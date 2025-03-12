@@ -11,8 +11,6 @@ const displayDays = document.getElementById('display-days');
 const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const monthsOfTheYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-let increaser = 0;
-
 const populateSelectors = () => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -44,10 +42,6 @@ const displayCalender = () => {
 
     date.setFullYear(selectedYear, selectedMonth);
 
-    if (increaser !== 0) {
-        date.setMonth(new Date().getMonth() + increaser)
-    }
-
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
     const numberOfDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 
@@ -75,8 +69,6 @@ const displayCalender = () => {
         const dayDate = new Date(selectedYear, date.getMonth(), actualDay);
         const dayName = weekdays[dayDate.getDay()];
 
-        console.log(`Checking: ${MonthsInWords} ${actualDay} (${dayName})`);
-
         const event = days.find(event => {
             const eventDate = specificDayOfMonth(selectedYear, event.monthName, event.dayName, event.occurrence);
             return eventDate && eventDate.getDate() === actualDay && eventDate.getMonth() === date.getMonth();
@@ -87,10 +79,8 @@ const displayCalender = () => {
             console.log(`Match found: ${event.name}`);
             day.classList.add('commemorative-day');
             day.title = event.name;
-            day.innerHTML += `<br><small>${event.name}</small>`;
-        } else {
-            console.log("No match found.");
-        }
+            day.innerHTML += `<br><small><i>${event.name}</i></small>`;
+        } 
 
     }
     displayDays.appendChild(day);
@@ -98,35 +88,54 @@ const displayCalender = () => {
 }
 
 
-nextBtn.addEventListener('click', () => {
-    let nextMonth = monthsOfTheYear.indexOf(selectMonth.value) + 1;
-        if(nextMonth <= 11) selectMonth.value = monthsOfTheYear[nextMonth];
-        else {
-            if(selectYear.value >= 2100) return; 
-            selectMonth.value = monthsOfTheYear[0];
-            selectYear.value = parseInt(selectYear.value) + 1;
+    nextBtn.addEventListener('click', () => {
+        let nextMonth = monthsOfTheYear.indexOf(selectMonth.value) + 1;
+        let currentDate = new Date();
+    
+        if (selectYear.value == 2099 && nextMonth > 11) {
+            selectMonth.value = monthsOfTheYear[currentDate.getMonth()];
+            selectYear.value = currentDate.getFullYear();
+        } else {
+            if (nextMonth <= 11) {
+                selectMonth.value = monthsOfTheYear[nextMonth];
+            } else {
+                if (selectYear.value >= 2100) return;
+                selectMonth.value = monthsOfTheYear[0];
+                selectYear.value = parseInt(selectYear.value) + 1;
+            }
         }
-    displayCalender();
-});
 
+        displayCalender();
+    });
+    
 prevBtn.addEventListener('click', () => {
     let prevMonth = monthsOfTheYear.indexOf(selectMonth.value) - 1;
-        if(prevMonth != -1) selectMonth.value = monthsOfTheYear[prevMonth];
-        else {
-            if(selectYear.value <= 1900) return; 
-            selectMonth.value = monthsOfTheYear[monthsOfTheYear.length - 1];
+    let currentDate = new Date();
+
+    if (selectYear.value == 1900 && prevMonth < 0) {
+        selectMonth.value = monthsOfTheYear[currentDate.getMonth()];
+        selectYear.value = currentDate.getFullYear();
+    } else {
+        if (prevMonth >= 0) {
+            selectMonth.value = monthsOfTheYear[prevMonth];
+        } else {
+            if (selectYear.value <= 1900) return;
+            selectMonth.value = monthsOfTheYear[11];
             selectYear.value = parseInt(selectYear.value) - 1;
-        }    
+        }
+    }
+
     displayCalender();
 });
 
+
 selectMonth.addEventListener('change', () => {
-    increaser = 0;
+    
     displayCalender();
 });
 
 selectYear.addEventListener('change', () => {
-    increaser = 0;
+    
     displayCalender();
 });
 

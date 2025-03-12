@@ -13,6 +13,19 @@ export const specificDayOfMonth = (year, monthName, dayName, occurrence) => {
     const occurrenceNum = occurrenceMap[occurrence];
     let count = 0;
 
+    if (occurrence === "last") {
+        let lastMatchingDay = null;
+        for (let day = 31; day >= 1; day--) {
+            const date = new Date(year, monthIndex, day);
+            if (date.getMonth() !== monthIndex) break; // If the month changes, stop the loop
+            if (date.getDay() === dayIndex) {
+                lastMatchingDay = date;
+                break;
+            }
+        }
+        return lastMatchingDay;
+    }
+
     if (!(occurrence in occurrenceMap)) {
         return null;
     }
@@ -43,20 +56,6 @@ export const specificDayOfMonth = (year, monthName, dayName, occurrence) => {
 
     // For other occurrences, add 7 days for each next occurrence
     targetDate.setDate(firstOccurrenceDate.getDate() + (occurrenceNum - 1) * 7);
-
-    // If occurrence is "last", loop backward to find the last occurrence of the weekday
-    if (occurrence === "last") {
-        let lastMatchingDay = null;
-        for (let day = 31; day >= 1; day--) {
-            const date = new Date(year, monthIndex, day);
-            if (date.getMonth() !== monthIndex) break; // If the month changes, stop the loop
-            if (date.getDay() === dayIndex) {
-                lastMatchingDay = date;
-                break;
-            }
-        }
-        return lastMatchingDay;
-    }
 
     return targetDate;
 }
